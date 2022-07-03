@@ -1,12 +1,10 @@
+import { PaginationQueryDto } from '@iluvcoffee/common';
 import {
   Body,
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -20,9 +18,8 @@ export class CoffeesController {
   constructor(private readonly coffeesService: CoffessService) {}
 
   @Get()
-  findAll(@Query() paginationQuery) {
-    // const { limit, offset } = paginationQuery;
-    return this.coffeesService.findAll();
+  findAll(@Query() paginationQuery: PaginationQueryDto) {
+    return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
