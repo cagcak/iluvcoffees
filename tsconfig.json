@@ -15,10 +15,12 @@
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
+    "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@iluvcoffee/common": ["src/common"]
+      "@iluvcoffee/common": ["src/common"],
+      "@iluvcoffee/config": ["src/config"]
     }
   }
 }

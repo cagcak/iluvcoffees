@@ -1,4 +1,9 @@
-import { PaginationQueryDto } from '@iluvcoffee/common';
+import {
+  PaginationQueryDto,
+  ParseIntPipe,
+  Protocol,
+  Public,
+} from '@iluvcoffee/common';
 import {
   Body,
   Controller,
@@ -17,18 +22,25 @@ import { CoffessService } from '../services/coffess.service';
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffessService) {}
 
+  @Public()
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
+  async findAll(@Query() paginationQuery: PaginationQueryDto) {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     return this.coffeesService.findAll(paginationQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
+    console.log(id);
+
     return this.coffeesService.findOne(id);
   }
 
   @Post()
-  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+  create(
+    @Protocol('https') protocol: string,
+    @Body() createCoffeeDto: CreateCoffeeDto,
+  ) {
     return this.coffeesService.create(createCoffeeDto);
   }
 
