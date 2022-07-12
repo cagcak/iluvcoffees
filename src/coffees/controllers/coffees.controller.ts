@@ -14,14 +14,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCoffeeDto } from '../dto/create-coffee.dto';
 import { UpdateCoffeeDto } from '../dto/update-coffee.dto';
 import { CoffessService } from '../services/coffess.service';
 
+@ApiTags('coffes endpoints')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffessService) {}
 
+  @ApiForbiddenResponse({ description: 'Forbidden response' })
   @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
@@ -31,8 +34,6 @@ export class CoffeesController {
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: string) {
-    console.log(id);
-
     return this.coffeesService.findOne(id);
   }
 
