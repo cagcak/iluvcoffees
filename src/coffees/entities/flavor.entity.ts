@@ -6,9 +6,9 @@ export class Flavor {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   name: string;
 
-  @ManyToMany((type) => Coffee, (coffee) => coffee.flavors)
+  @ManyToMany(() => Coffee, (coffee) => coffee.flavors)
   coffees: Coffee[];
 }

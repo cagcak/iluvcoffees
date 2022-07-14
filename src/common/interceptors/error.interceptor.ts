@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { catchError, Observable } from 'rxjs';
+import { QueryFailedError, TypeORMError } from 'typeorm';
 import commonConfig from '../config/common.config';
 
 @Injectable()
@@ -52,9 +53,11 @@ export class ErrorInterceptor implements NestInterceptor {
             throw new InternalServerErrorException(genericErrorMessage);
           case error instanceof RequestTimeoutException:
             throw new RequestTimeoutException(genericErrorMessage);
+          case error instanceof QueryFailedError:
+            throw new TypeORMError(genericErrorMessage.error.message);
 
           default:
-            throw new Error(error.message);
+            throw new Error(error.message || error.stack);
         }
       }),
     );

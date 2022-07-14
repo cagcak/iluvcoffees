@@ -44,7 +44,7 @@ export class CoffessService {
     });
 
     if (!coffee)
-      throw new NotFoundException(`Coffee of id: ${id} could't found`);
+      throw new NotFoundException(`Coffee of id: ${id} couldn't found`);
 
     return coffee;
   }
@@ -70,7 +70,8 @@ export class CoffessService {
 
     const coffee = await this.coffeeRepository.preload({
       id: +id,
-      ...flavors,
+      ...updateCoffeeDto,
+      flavors,
     });
 
     if (!coffee) throw new NotFoundException(`Coffee #${id} not found`);
@@ -114,6 +115,6 @@ export class CoffessService {
 
     if (existingFlavor) return existingFlavor;
 
-    this.flavorRepository.create({ name });
+    return this.flavorRepository.create({ name });
   }
 }

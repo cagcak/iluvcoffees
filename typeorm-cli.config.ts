@@ -1,7 +1,6 @@
 import { Coffee } from 'src/coffees/entities/coffee.entity';
 import { Flavor } from 'src/coffees/entities/flavor.entity';
-import { CoffeeRefactor1656843398457 } from 'src/coffees/migrations/1656843398457-CoffeeRefactor';
-import { SchemaSync1656846147605 } from 'src/coffees/migrations/1656846147605-SchemaSync';
+import { CoffeeRefactor1657666376161 } from 'src/coffees/migrations/1657666376161-CoffeeRefactor';
 import { DataSource } from 'typeorm';
 
 export default new DataSource({
@@ -12,5 +11,5 @@ export default new DataSource({
   password: 'pass123',
   database: 'postgres',
   entities: [Coffee, Flavor],
-  migrations: [CoffeeRefactor1656843398457, SchemaSync1656846147605],
+  migrations: [CoffeeRefactor1657666376161],
 });

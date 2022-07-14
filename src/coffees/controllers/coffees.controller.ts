@@ -1,9 +1,4 @@
-import {
-  PaginationQueryDto,
-  ParseIntPipe,
-  Protocol,
-  Public,
-} from '@iluvcoffee/common';
+import { PaginationQueryDto, ParseIntPipe, Public } from '@iluvcoffee/common';
 import {
   Body,
   Controller,
@@ -28,7 +23,6 @@ export class CoffeesController {
   @Public()
   @Get()
   async findAll(@Query() paginationQuery: PaginationQueryDto) {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     return this.coffeesService.findAll(paginationQuery);
   }
 
@@ -39,7 +33,7 @@ export class CoffeesController {
 
   @Post()
   create(
-    @Protocol('https') protocol: string,
+    // @Protocol('https') protocol: string,
     @Body() createCoffeeDto: CreateCoffeeDto,
   ) {
     return this.coffeesService.create(createCoffeeDto);

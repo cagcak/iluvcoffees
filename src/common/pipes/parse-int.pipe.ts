@@ -8,8 +8,6 @@ import {
 @Injectable()
 export class ParseIntPipe implements PipeTransform {
   transform(value: string, metadata: ArgumentMetadata) {
-    console.log(value);
-
     if (typeof value !== 'string') return value;
 
     const val = parseInt(value, 10);

@@ -7,15 +7,15 @@ import {
 } from 'typeorm';
 import { Flavor } from './flavor.entity';
 
-@Entity() // coffee => sql table
+@Entity()
 export class Coffee {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string; // => alter column name brand to title by migration
+  name: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: '' })
   description: string;
 
   @Column()
@@ -25,6 +25,6 @@ export class Coffee {
   recommendations: number;
 
   @JoinTable()
-  @ManyToMany((type) => Flavor, (flavor) => flavor.coffees, { cascade: true })
+  @ManyToMany(() => Flavor, (flavor) => flavor.coffees, { cascade: true })
   flavors: Flavor[];
 }

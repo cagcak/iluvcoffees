@@ -7,15 +7,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import commonConfig from './config/common.config';
-import { HttpExceptionFilter } from './filters';
-import { ApiKeyGuard } from './guards';
 import {
-  ErrorInterceptor,
-  TimeoutInterceptor,
-  WrapResponseInterceptor,
-} from './interceptors';
+  GlobalExceptionFilter,
+  HttpExceptionFilter,
+  OrmExceptionFilter,
+} from './filters';
+import { ApiKeyGuard } from './guards';
 import { LoggingMiddleware } from './middleware';
 import { ParseIntPipe } from './pipes';
 
@@ -37,10 +36,12 @@ import { ParseIntPipe } from './pipes';
     },
     { provide: APP_GUARD, useClass: ApiKeyGuard },
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
+    { provide: APP_FILTER, useClass: OrmExceptionFilter },
+    { provide: APP_FILTER, useClass: GlobalExceptionFilter },
     { provide: APP_PIPE, useClass: ParseIntPipe },
-    { provide: APP_INTERCEPTOR, useClass: WrapResponseInterceptor },
-    { provide: APP_INTERCEPTOR, useClass: ErrorInterceptor },
-    { provide: APP_INTERCEPTOR, useClass: TimeoutInterceptor },
+    // { provide: APP_INTERCEPTOR, useClass: WrapResponseInterceptor },
+    // { provide: APP_INTERCEPTOR, useClass: ErrorInterceptor },
+    // { provide: APP_INTERCEPTOR, useClass: TimeoutInterceptor },
   ],
 })
 export class CommonModule implements NestModule {
