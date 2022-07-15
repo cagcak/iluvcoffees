@@ -17,10 +17,11 @@ export class WrapResponseInterceptor implements NestInterceptor {
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('Before...');
-
     const version = this.commonConf.version || 'alpha';
+    const executedHandlerName = context.getHandler().name;
 
-    return next.handle().pipe(map((data) => ({ version, data })));
+    return next
+      .handle()
+      .pipe(map((data) => ({ version, executedHandlerName, data })));
   }
 }

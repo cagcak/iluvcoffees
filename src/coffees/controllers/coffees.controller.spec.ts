@@ -1,7 +1,10 @@
 import { ConfigModule } from '@nestjs/config';
+import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+import { Logging } from '../../entities';
+import { LoggingService } from '../../services';
 import coffeesConfig from '../config/coffees.config';
 import { Coffee } from '../entities/coffee.entity';
 import { Flavor } from '../entities/flavor.entity';
@@ -17,9 +20,11 @@ describe('CoffeesController', () => {
       controllers: [CoffeesController],
       providers: [
         CoffessService,
+        LoggingService,
         { provide: DataSource, useValue: {} },
         { provide: getRepositoryToken(Flavor), useValue: {} },
         { provide: getRepositoryToken(Coffee), useValue: {} },
+        { provide: getModelToken(Logging.name), useValue: {} },
       ],
     }).compile();
 

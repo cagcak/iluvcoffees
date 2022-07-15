@@ -14,3 +14,17 @@ services:
       - '5433:5432'
     environment:
       POSTGRES_PASSWORD: pass123
+  log-db:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: mongo-log
+  test-log-db:
+    image: mongo
+    restart: always
+    ports:
+      - 27018:27017
+    environment:
+      MONGODB_DATABASE: mongo-test-log

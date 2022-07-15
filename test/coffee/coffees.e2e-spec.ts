@@ -1,4 +1,5 @@
 import { HttpServer, HttpStatus, INestApplication } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
@@ -27,6 +28,7 @@ describe('[Feature] Coffees - /coffees', () => {
       imports: [
         CoffeesModule,
         CommonModule,
+        MongooseModule.forRoot('mongodb://localhost:27018/mongo-log'),
         TypeOrmModule.forRoot({
           type: 'postgres',
           host: process.env.DATABASE_HOST,
@@ -52,7 +54,11 @@ describe('[Feature] Coffees - /coffees', () => {
       .send(coffee as CreateCoffeeDto)
       .expect(HttpStatus.CREATED)
       .then(({ body }) => {
-        expect(body).toEqual(expectedPartialCoffee);
+        expect(body).toEqual({
+          data: expectedPartialCoffee,
+          executedHandlerName: 'create',
+          version: '0.0.1',
+        });
       });
   });
 
@@ -61,8 +67,8 @@ describe('[Feature] Coffees - /coffees', () => {
       .get('/coffees')
       .set('Authorization', process.env.API_KEY)
       .then(({ body }) => {
-        expect(body.length).toBeGreaterThan(0);
-        expect(body[0]).toEqual(expectedPartialCoffee);
+        expect(body.data.length).toBeGreaterThan(0);
+        expect(body.data[0]).toEqual(expectedPartialCoffee);
       });
   });
 
@@ -71,7 +77,7 @@ describe('[Feature] Coffees - /coffees', () => {
       .get('/coffees/1')
       .set('Authorization', process.env.API_KEY)
       .then(({ body }) => {
-        expect(body).toEqual(expectedPartialCoffee);
+        expect(body.data).toEqual(expectedPartialCoffee);
       });
   });
 
@@ -85,13 +91,13 @@ describe('[Feature] Coffees - /coffees', () => {
       .set('Authorization', process.env.API_KEY)
       .send(updateCoffeeDto)
       .then(({ body }) => {
-        expect(body.name).toEqual(updateCoffeeDto.name);
+        expect(body.data.name).toEqual(updateCoffeeDto.name);
 
         return request(httpServer)
           .get('/coffees/1')
           .set('Authorization', process.env.API_KEY)
           .then(({ body }) => {
-            expect(body.name).toEqual(updateCoffeeDto.name);
+            expect(body.data.name).toEqual(updateCoffeeDto.name);
           });
       });
   });
